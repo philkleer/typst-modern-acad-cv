@@ -1,6 +1,7 @@
 // import fontawesome & academicons
-#import "@preview/fontawesome:0.5.0": *
+#import "@preview/fontawesome:0.6.0": *
 #import "@preview/use-academicons:0.1.0": *
+#import "@preview/datify:1.0.0": *
 
 // Functions from moderner-cv with changes
 // link: https://github.com/DeveloperPaul123/modern-cv
@@ -13,18 +14,19 @@
 // - ..args: additional named arguments for customization
 
 #let _cv-cols(left, right, ..args) = {
-  
   // Set the block style with no spacing below
   set block(below: 0pt)
-  
+
   // Create a table with specified column widths and no border strokes
   table(
-    columns: (1.12fr, 5fr), // Set column widths
-    stroke: none, // No border strokes
-    
+    columns: (1.12fr, 5fr),
+    // Set column widths
+    stroke: none,
+    // No border strokes
+
     // Spread any named arguments
     ..args.named(),
-    
+
     // Insert the left and right content into the table
     left,
     right,
@@ -36,7 +38,6 @@
 // - left-side: the content to be aligned to the right (Type: Any)
 // - right-side: the content to be formatted as a paragraph with justified alignment (Type: Any)
 #let cv-cols(left-side, right-side) = {
-  
   // Call the _cv-cols with aligned left-side and justified right-side parameters
   _cv-cols(
     // Align the left-side content to the right
@@ -51,21 +52,20 @@
 // - left-side: the content to be aligned to the right (Type: Any)
 // - right-side: the content to be formatted as a paragraph with justified alignment (Type: Any)
 #let cv-cols-table(left-side, right-side) = {
-  
   // Call the _cv-cols with aligned left-side and justified right-side parameters
   _cv-cols(
     // Align the left-side content to the right
     align(right, left-side),
     // Format the right-side content as a paragraph with justified alignment
-    align(left, right-side)
+    align(left, right-side),
   )
 }
 
 // Function cv-entry: a single entry in the CV
 // Arguments:
-// - date: content, 
-// - title: content, 
-// - location: content, and 
+// - date: content,
+// - title: content,
+// - location: content, and
 // - description (spread operator)
 #let cv-entry(
   date: [],
@@ -73,7 +73,6 @@
   location: [],
   ..description,
 ) = {
-  
   // Define elements to format the title and location, and include the spread description
   let elements = (
     // Make the title bold
@@ -83,7 +82,7 @@
     // Spread the description's positional arguments
     ..description.pos(),
   )
-  
+
   // Call the cv-cols with the date and the joined elements as arguments
   cv-cols(
     date,
@@ -100,26 +99,60 @@
 // - right-2: content for the fifth column, aligned left (Type: Any)
 
 #let cv-two-items(left-1, right-1, left-2, right-2) = {
-  
   // Set the block style with no spacing below and 1em spacing between items
   set block(below: 0pt, spacing: 1em)
-  
+
   // Create a table with specified column widths and no border strokes
   table(
-    columns: (8.6em, 9em, 9em, 9em, 8em), // Set column widths
-    stroke: none, // No border strokes
-    
+    columns: (8.6em, 9em, 9em, 9em, 8em),
+    // Set column widths
+    stroke: none,
+    // No border strokes
+
     // Align the table columns:
     // First column aligned left but left empty
     // Second column aligned left with left-1 content
     // Third column aligned left with right-1 content
     // Fourth column aligned left with left-2 content
     // Fifth column aligned left with right-2 content
-    align(left, ""), 
-    align(left, left-1), 
-    align(left, right-1), 
-    align(left, left-2), 
+    align(left, ""), align(left, left-1), align(left, right-1), align(left, left-2), align(left, right-2),
+  )
+}
+
+
+// Function cv-three-items: two items in a row with title (left-1/right-1) and description (left-2/right-2)
+// Arguments:
+// - left-1: content for the second column, aligned left (Type: Any)
+// - right-1: content for the third column, aligned left (Type: Any)
+// - left-2: content for the fourth column, aligned left (Type: Any)
+// - right-2: content for the fifth column, aligned left (Type: Any)
+// - left-3: content for the sixth column, aligned left (Type: Any)
+// - right-3: content for the seventh column, aligned left (Type: Any)
+
+#let cv-three-items(left-1, right-1, left-2, right-2, left-3, right-3) = {
+  // Set the block style with no spacing below and 1em spacing between items
+  set block(below: 0pt, spacing: 1em)
+
+  // Create a table with specified column widths and no border strokes
+  table(
+    columns: (8.6em, 8.5em, 2.5em, 8.5em, 2.5em, 8.5em, 2.5em),
+    // Set column widths
+    stroke: none,
+    // No border strokes
+
+    // Align the table columns:
+    // First column aligned left but left empty
+    // Second column aligned left with left-1 content
+    // Third column aligned left with right-1 content
+    // Fourth column aligned left with left-2 content
+    // Fifth column aligned left with right-2 content
+    align(left, ""),
+    align(left, left-1),
+    align(left, right-1),
+    align(left, left-2),
     align(left, right-2),
+    align(left, left-3),
+    align(left, right-3),
   )
 }
 
@@ -141,7 +174,7 @@
   let gray_color = rgb(metadata.colors.gray_color)
   // Initialize index to 0 for iteration
   let index = 0
-  
+
 
   // Extract fields depending on language
   // Arguments
@@ -190,12 +223,12 @@
     }
   } else {
     if metadata.personal.split {
-      title  = [
+      title = [
         #text(size: 32pt, metadata.personal.name.split(" ").at(0))
         #linebreak()
         #text(size: 32pt, metadata.personal.name.split(" ").at(1), baseline: -10pt)
       ]
-     } else {
+    } else {
       title = [#text(size: 32pt, metadata.personal.name)]
     }
   }
@@ -242,7 +275,7 @@
       [
         // The icon as a clickable link
         #iconType(icon, fill: main_color) #link(textlink)[#text(username, fill: gray_color)]
-      ]
+      ],
     )
   }
 
@@ -250,7 +283,7 @@
   let socialBlock = stack(
     dir: ttb,
     spacing: 0.5em,
-    ..socialist
+    ..socialist,
   )
 
   // Title and social stack
@@ -260,7 +293,7 @@
     align(
       right + top,
       socialBlock,
-    )
+    ),
   )
 }
 
@@ -274,9 +307,8 @@
 #let _adresser(
   metadata,
   multilingual,
-  language: "de"
+  language: "de",
 ) = {
-
   // Load the multilingual YAML file specified in the metadata paths
   // let multilingual = yaml(metadata.paths.i18n)
 
@@ -294,26 +326,8 @@
 
   // Insert a line break
   linebreak()
-    
-  // Initialize the index to 0
-  let index = 0
 
-  // Iterate over each entry in the multilingual.lang collection
-  for entry in multilingual.lang {
-    
-    // Check if the current language matches the language key at the current index
-    if language == multilingual.lang.keys().at(index) {      
-      
-      // Display the current date in the format specified for the current language
-      datetime.today().display(multilingual.lang.at(language).date-format)
-
-      // Since we found the matching language, break out of the loop
-      break
-    }
-    
-    // Increment the index by 1 for the next iteration
-    index += 1
-  }
+  custom-date-format(datetime.today(), pattern: "long", lang: language)
 }
 
 // Function modern-acad-cv: initiate CV
@@ -331,7 +345,7 @@
   lang: "en",
   font: ("Fira Sans", "Andale Mono", "Roboto"),
   show-date: true,
-  body
+  body,
 ) = {
   // Set the page settings with specified paper size and margins
   set page(
@@ -348,11 +362,11 @@
       // Set the footer text properties
       #set text(
         fill: gray,
-        size: 10pt
+        size: 10pt,
       )
       [
-        // Display the current page number in the format "1/1"
-        #context {counter(page).display("1/1", both: true)}
+      // Display the current page number in the format "1/1"
+      #context { counter(page).display("1/1", both: true) }
       ]
     ],
     footer-descent: 0pt,
@@ -379,7 +393,7 @@
       [#it.body],
     )
   }
-  
+
   // Define how to show level 1 headings
   show heading.where(level: 1): it => {
     set text(weight: "regular")
@@ -423,8 +437,8 @@
   // Populate the headLabs dictionary with header labels
   for key in languageData.keys() {
     headLabs.insert(
-      key,  // Header key
-      languageData.at(key)  // Localized header text
+      key, // Header key
+      languageData.at(key), // Localized header text
     )
   }
 
@@ -440,18 +454,17 @@
 
 #let cv-auto-cats(
   what,
-  multilingual,   
+  multilingual,
   headers,
-  lang: "de"
+  lang: "de",
 ) = {
-
   // Initialize variables to store course details.
-  let date = ""          // Variable to hold the date for each course
-  let title = ""         // Variable to hold the title of each course
-  let subtitle = ""     // Variable to hold the subtitle of each course
-  let location = ""      // Variable to hold the location of each course
-  let description = ""   // Variable to hold the description of each course
-  let index = 0          // Index to track the current key in the dictionary
+  let date = "" // Variable to hold the date for each course
+  let title = "" // Variable to hold the title of each course
+  let subtitle = "" // Variable to hold the subtitle of each course
+  let location = "" // Variable to hold the location of each course
+  let description = "" // Variable to hold the description of each course
+  let index = 0 // Index to track the current key in the dictionary
 
   // Create a headers dictionary based on the specified language, used for translating category names.
   // let headers = create-headers(metadata.paths.i18n, lang: lang)
@@ -471,8 +484,8 @@
 
   // Iterate over each key (category) in the main dictionary.
   for key in what.keys() {
-    let subset = what.at(key)  // Sub-dictionary for the current category.
-    let header = what.keys().at(index)  // Current category key.
+    let subset = what.at(key) // Sub-dictionary for the current category.
+    let header = what.keys().at(index) // Current category key.
 
     // Prefix the header with "training-" to match localization keys.
     let header = "training-" + header
@@ -484,8 +497,8 @@
     [== #headerValue]
 
     // Iterate over each course in the current category (subset).
-    for course in subset.keys() { 
-      let subset2 = subset.at(course)  // Sub-dictionary for the current course.
+    for course in subset.keys() {
+      let subset2 = subset.at(course) // Sub-dictionary for the current course.
 
       // Extract the date from the course details.
       if "left" in subset2.keys() {
@@ -497,7 +510,7 @@
       }
 
       // Extract the title, checking if it is a multilingual field.
-      if type(subset2.title) == dictionary { 
+      if type(subset2.title) == dictionary {
         title = getLangField(subset2.title, lang)
       } else {
         title = subset2.title
@@ -518,7 +531,7 @@
           location = getLangField(subset2.location, lang)
         } else {
           location = subset2.location
-        } 
+        }
       }
 
       // Extract the description if present, using language-specific fields.
@@ -537,49 +550,46 @@
       if ("location", "subtitle", "description") in subset2.keys() {
         elements = (
           strong(title),
-          (subtitle),  // Bold title with subtitle.
-          location,                        // Location of the course.
-          emph(description)               // Emphasized description.
+          (subtitle), // Bold title with subtitle.
+          location, // Location of the course.
+          emph(description), // Emphasized description.
         )
 
         // Output the formatted content with date and elements.
         cv-cols(
           date,
-          elements.join(", ")
+          elements.join(", "),
         )
-      } 
-      else if ("location", "subtitle") in subset2.keys() {
+      } else if ("location", "subtitle") in subset2.keys() {
         elements = (
           strong(title),
-          (subtitle),  // Bold title with subtitle.
-          location                       // Location of the course.
+          (subtitle), // Bold title with subtitle.
+          location, // Location of the course.
         )
 
         // Output the formatted content with date and elements.
         cv-cols(
           date,
-          elements.join(", ")
+          elements.join(", "),
         )
-      } 
-      else if ("location") in subset2.keys() {
+      } else if "location" in subset2.keys() {
         elements = (
-          strong(title),  // Bold title only.
-          location           // Location of the course.
+          strong(title), // Bold title only.
+          location, // Location of the course.
         )
 
         // Output the formatted content with date and elements.
         cv-cols(
           date,
-          elements.join(", ")
+          elements.join(", "),
         )
-      } 
-      else if ("subtitle") in subset2.keys() {
-        elements = [#strong(title) (#subtitle)]  // Bold title with subtitle only.
+      } else if "subtitle" in subset2.keys() {
+        elements = [#strong(title) (#subtitle)] // Bold title with subtitle only.
 
         // Output the formatted content with date and elements.
         cv-cols(
           date,
-          elements
+          elements,
         )
       }
     }
@@ -594,15 +604,14 @@
 // Arguments:
 // - fields: A dictionary containing details of a single reference entry (e.g., authors, title, publication date).
 // - multilingual: object with multilingual entries
-// - me: An optional string representing the author's name that should be highlighted in the final reference string.
+// - me: An optional content or array of contents representing the author's name(s) that should be highlighted in the final reference string.
 // - lang: A string indicating the language of the CV or document (e.g., "en" for English). Defaults to "en".
 #let make-entry-apa(
   fields,
   multilingual,
-  me: none, 
-  lang: "en"
+  me: none,
+  lang: "en",
 ) = {
-
   // Extract the list of authors from the fields.
   let authors = fields.author
 
@@ -610,9 +619,8 @@
   // Arguments:
   //   - auths: A list of authors to be formatted.
   //   - max_count: Maximum number of authors to display before using "et al."
-  //   - me: The author's name to be highlighted, if applicable.
+  //   - me: The author's name to be highlighted, if applicable as content
   let format_authors(auths, max_count, me) = {
-
     // Initialize an empty list to hold the formatted authors.
     let formatted_authors = ()
 
@@ -633,11 +641,11 @@
       let parts = auths.at(index).split(", ")
       let author = text(parts.at(0) + ", " + parts.at(1).first() + ".")
 
-      // Highlight the author's name if it matches `me`.
+      // Highlight the author's name if it matches `me` or one of the names in the array `me`
       if not me == none {
         if author == me or type(me) == array and author in me {
           if "corresponding" in fields and fields.corresponding == true {
-            author = strong(author + super("C"))  // Add a superscript "C" for corresponding author.
+            author = strong(author + super("C")) // Add a superscript "C" for corresponding author.
           } else {
             author = strong(author)
           }
@@ -666,7 +674,6 @@
   //   - max_count: Maximum number of authors to display before using "et al."
   //   - me: The author's name to be highlighted, if applicable.
   let format_editors(eds, max_count, me) = {
-
     // Initialize an empty list to hold the formatted authors.
     let formatted_editors = ()
 
@@ -690,7 +697,7 @@
       // Highlight the author's name if it matches `me`.
       if not me == none and editor == me {
         if "corresponding" in fields and fields.corresponding == true {
-          editor = strong(me + super("C"))  // Add a superscript "C" for corresponding author.
+          editor = strong(me + super("C")) // Add a superscript "C" for corresponding author.
         } else {
           editor = strong(me)
         }
@@ -705,7 +712,7 @@
       return [#formatted_editors.join(", ", last: " & ")]
     }
   }
-  
+
   // Function to format the publication date or publication state.
   // Arguments:
   //   - fields: The reference fields dict.
@@ -714,7 +721,7 @@
     // Handle cases where no date is available.
     if not "date" in fields {
       if not "pubstate" in fields {
-        return [ (n.d.). ]  // Return "n.d." (no date) if neither date nor pubstate is available.
+        return [ (n.d.). ] // Return "n.d." (no date) if neither date nor pubstate is available.
       } else {
         // Handle cases with a publication state.
         let header = fields.at("pubstate")
@@ -729,7 +736,7 @@
         }
       }
     } else {
-      return [ (#fields.date). ]  // Return the formatted date.
+      return [ (#fields.date). ] // Return the formatted date.
     }
   }
 
@@ -741,7 +748,7 @@
     // Handle multilingual titles stored in a dict.
     if type(title) == dictionary {
       if not lang in title {
-        return [ #eval(title.main, mode: "markup")]  // Return the main title if the specified language is not available.
+        return [ #eval(title.main, mode: "markup")] // Return the main title if the specified language is not available.
       } else {
         // If the title is available in the document's language, format it accordingly.
         for entry in fields.title.keys() {
@@ -750,10 +757,10 @@
           } else {
             return [ #emph("Missing title for document language")]
           }
-        } 
+        }
       }
     } else {
-     return [ #eval(title, mode: "markup")]  // Return the title as markup formatted string.
+      return [ #eval(title, mode: "markup")] // Return the title as markup formatted string.
     }
   }
 
@@ -790,7 +797,8 @@
         reference += [ #link(url)[#url]]
       }
     }
-  } else if fields.type == "chapter" { // Handle references of type "chapter".
+  } else if fields.type == "chapter" {
+    // Handle references of type "chapter".
     reference += format_authors(authors, 6, me)
     reference += format_date(fields, lang)
     reference += format_title(fields.title, lang)
@@ -814,7 +822,8 @@
       let url = "https://doi.org/" + fields.serial-number.doi
       reference += [ #link(url)[#url]]
     }
-  } else if fields.type == "book" {  // Handle references of type "book".
+  } else if fields.type == "book" {
+    // Handle references of type "book".
     reference += format_authors(authors, 6, me)
     reference += format_date(fields, lang)
     reference += format_title(fields.title, lang)
@@ -830,7 +839,8 @@
       let url = "https://doi.org/" + fields.serial-number.doi
       reference += [ #link(url)[#url]]
     }
-  } else { // Handle other types of references.
+  } else {
+    // Handle other types of references.
     reference += format_authors(authors, 6, me)
     reference += format_date(fields, lang)
     reference += format_title(fields.title, lang)
@@ -852,7 +862,7 @@
 
   // Return the formatted reference.
   reference
-  parbreak()  // Add a paragraph break after the reference.
+  parbreak() // Add a paragraph break after the reference.
 }
 
 // Function cv-refs: Creating a reference list
@@ -864,16 +874,16 @@
 // - multilingual: object with multilingual entries
 // - entries: An array of strings, representing the specific entries to include in the output. Defaults to an empty list (), which will include all entries in the file.
 // - tag: An optional string. If provided, only entries with this tag will be included. Defaults to none.
-// - me: An optional string, likely representing the name of the author. Used for personalized output (name will be bold). Defaults to none.
+// - me: An optional string or array of strings, likely representing the name(s) of the author. Used for personalized output (name(s) will be bold). Defaults to none.
 // - lang: A string specifying the language to be used in the references (e.g., "de" for German). If CV is in different language than title-main, translations will be add to the reference (translations need to be given in i18n.yaml) Defaults to "de".
 
 #let cv-refs(
   what,
-  multilingual,  
-  entries: (), 
+  multilingual,
+  entries: (),
   tag: none,
   me: none,
-  lang: "de"
+  lang: "de",
 ) = {
   // Set paragraph formatting options:
   // - `hanging-indent`: Indentation for the second and subsequent lines of each paragraph.
@@ -882,12 +892,12 @@
   set par(
     hanging-indent: 2em,
     justify: true,
-    linebreaks: auto
+    linebreaks: auto,
   )
-  
+
   // Set spacing above each block of text.
-   set block(above: 0.65em)
-  
+  set block(above: 0.65em)
+
   // create object
   // If `entries` is empty, populate it with all keys from the YAML file.
   if entries.len() == 0 {
@@ -906,24 +916,23 @@
     if field.tags == "planned" {
       planned += 1
     } else if field.type == "article" {
-      articles += 1 
+      articles += 1
     } else if field.type == "chapter" {
       incollections += 1
     } else if field.type == "book" {
       books += 1
     } else if field.tags == "other" {
       others += 1
-    } 
+    }
   }
 
   // Loop through each entry in the YAML file to generate the reference list.
   for (entry, fields) in what {
-    
     // Skip entries not specified in entries if entries are specified.
     if entry not in entries {
       continue
     }
- 
+
     // If a tag is provided, skip entries that don't have the specified tag.
     if not tag == none {
       if "tags" not in fields or tag not in fields.tags {
@@ -947,7 +956,7 @@
     } else if fields.tags == "other" {
       [\[#others\] ]
       others -= 1
-    } 
+    }
 
     // Generate the reference entry using a custom function `make-entry-apa`.
     // This function formats the reference according to APA style.
@@ -966,14 +975,14 @@
 #let cv-auto(
   what,
   multilingual,
-  lang: "de"
+  lang: "de",
 ) = {
   // let date = ""
   // let title = ""
   // let subtitle = ""
   // let location = ""
   // let description = ""
-  let subset = (:)  // // Initialize the subset dict
+  let subset = (:) // // Initialize the subset dict
 
   // Iterate over each key in the database
   for key in what.keys() {
@@ -1050,7 +1059,7 @@
 
     cv-cols(
       date,
-      entry
+      entry,
     )
   }
 }
@@ -1062,15 +1071,15 @@
 // - lang: Language code to fetch language-specific text from the YAML data.
 #let cv-auto-stc(
   what,
-  multilingual,    
-  lang: "de" 
+  multilingual,
+  lang: "de",
 ) = {
-  let date = ""          // Date of the event.
-  let title = ""         // Title of the event.
-  let subtitle = ""      // Subtitle of the event (if available).
-  let check = ""         // Unused variable, potentially for future checks or operations.
-  let location = ""      // Location of the event (if available).
-  let description = ""   // Description of the event (if available).
+  let date = "" // Date of the event.
+  let title = "" // Title of the event.
+  let subtitle = "" // Subtitle of the event (if available).
+  let check = "" // Unused variable, potentially for future checks or operations.
+  let location = "" // Location of the event (if available).
+  let description = "" // Description of the event (if available).
 
   // Initialize an index for language iteration
   let index = 0
@@ -1078,7 +1087,7 @@
   // Iterate over each key (event) in the dictionary
   for key in what.keys() {
     let subset = what.at(key)
-    
+
     // Iterate over available languages in the multilingual data
     for language in multilingual.lang {
       if lang == language.at(index) {
@@ -1119,8 +1128,7 @@
 
         // Since the matching language is found, break out of the loop
         break
-      } 
-        
+      }
     }
 
     // Construct the elements for cv-cols output based on available keys
@@ -1137,13 +1145,13 @@
     if "description" in subset.keys() {
       entry += [, #description]
     }
-    
+
     // If no subtitle is available, create a column with just the title
     cv-cols(
       date,
-      entry
+      entry,
     )
- }
+  }
 }
 
 // Function cv-auto-stp: generates a formatted table of events based on data from a YAML file, supporting multiple languages: Title (Subtitle), location, description
@@ -1152,87 +1160,87 @@
 // - multilingual: object with multilingual entries
 // - lang: The language code to use for fetching language-specific text from the YAML data (default is "de").
 #let cv-auto-stp(
-  what, 
-  multilingual,    
-  lang: ""
+  what,
+  multilingual,
+  lang: "",
 ) = {
-    // Initialize variables
-    let date = ""          // Date of the event.
-    let title = ""         // Title of the event.
-    let subtitle = ""      // Subtitle of the event (if available).
-    let location = ""      // Location of the event.
-    let description = ""   // Description of the event (if available).
-    let index = 0          // Index for iterating through languages.
+  // Initialize variables
+  let date = "" // Date of the event.
+  let title = "" // Title of the event.
+  let subtitle = "" // Subtitle of the event (if available).
+  let location = "" // Location of the event.
+  let description = "" // Description of the event (if available).
+  let index = 0 // Index for iterating through languages.
 
-    // Iterate over the keys (events) in the dictionary
-    for key in what.keys() {
-      let subset = what.at(key)
+  // Iterate over the keys (events) in the dictionary
+  for key in what.keys() {
+    let subset = what.at(key)
 
-      // Iterate over available languages in the multilingual data
-      for language in multilingual.lang {
-        if lang == language.at(index) {
-          // Handle the 'left' field for date
-          if type(subset.at("left")) == dictionary {
-            date = subset.left.at(lang)
-          } else {
-            date = subset.left
+    // Iterate over available languages in the multilingual data
+    for language in multilingual.lang {
+      if lang == language.at(index) {
+        // Handle the 'left' field for date
+        if type(subset.at("left")) == dictionary {
+          date = subset.left.at(lang)
+        } else {
+          date = subset.left
+        }
+
+        // Handle the 'title' field
+        if type(subset.at("title")) == dictionary {
+          title = subset.title.at(lang)
+        } else {
+          title = subset.title
+        }
+
+        // Handle the 'subtitle' field
+        if type(subset.at("subtitle")) == dictionary {
+          subtitle = subset.subtitle.at(lang)
+        } else {
+          subtitle = subset.subtitle
+        }
+
+        // Handle the 'location' field
+        if type(subset.at("location")) == dictionary {
+          location = subset.location.at(lang)
+        } else {
+          location = subset.location
+        }
+
+        // Handle the 'description' field, if it exists
+        if "description" in subset.keys() {
+          if type(subset.at("description")) == dictionary {
+            description = subset.description.at(lang)
           }
+        }
 
-          // Handle the 'title' field
-          if type(subset.at("title")) == dictionary {
-            title = subset.title.at(lang)
-          } else {
-            title = subset.title
-          }
-
-          // Handle the 'subtitle' field
-          if type(subset.at("subtitle")) == dictionary {
-            subtitle = subset.subtitle.at(lang)
-          } else {
-            subtitle = subset.subtitle
-          }
-
-          // Handle the 'location' field
-          if type(subset.at("location")) == dictionary {
-            location = subset.location.at(lang)
-          } else {
-            location = subset.location
-          }
-
-          // Handle the 'description' field, if it exists
-          if "description" in subset.keys() {
-            if type(subset.at("description")) == dictionary {
-              description = subset.description.at(lang)
-            }
-          }
-
-          // Since we found the matching language, break out of the loop
-          break
-        } 
+        // Since we found the matching language, break out of the loop
+        break
       }
-
-      // Create elements for the event
-      let entry = strong(title)
-
-      if "subtitle" in subset.keys() {
-        entry += [ (#subtitle)]
-      }
-
-      if "location" in subset.keys() {
-        entry += [, #location]
-      }
-
-      if "description" in subset.keys() {
-        entry += [, #emph(description)]
-      }
-    
-      // Generate a column with the event date and elements without description
-      cv-cols(
-        date,
-        entry
-      )
     }
+
+    // Create elements for the event
+    let entry = strong(title)
+
+    if "subtitle" in subset.keys() {
+      entry += [ (#subtitle)]
+    }
+
+    if "location" in subset.keys() {
+      entry += [, #location]
+    }
+
+    if "description" in subset.keys() {
+      entry += [, #emph(description)]
+    }
+
+    // Generate a column with the event date and elements without description
+    cv-cols(
+      date,
+      entry,
+    )
   }
+}
 
 
 // Function cv-table-teaching: generates a table of events based on data from a YAML file and multilingual labels. It processes the events to include details such as the term (summer/winter), name, and study information. The function constructs a table with headers and details for each event, displaying them in the specified language.
@@ -1242,31 +1250,31 @@
 // - multilingual: object with multilingual entries
 // - lang: language code for fetching language-specific text from the YAML data.
 #let cv-table-teaching(
-  what, 
-  multilingual,          
-  lang: ""  
+  what,
+  multilingual,
+  lang: "",
 ) = {
   // Initialize variables
-  let overview = ()                  // Container to store event details for the table.
-  let term = ()                      // Temporary variable for storing term information (summer/winter).
-  let tabhelp = ()                   // Container for storing table headers and labels.
-  let year = ""                     // Year extracted from the YAML data.
-  let name = ""                     // Event name.
-  let study = ""                    // Study details for the event.
-  let index1 = 0                    // Index for iterating through dictionary keys.
-  let tab-year = ""                 // Header for the year column in the table.
-  let tab-course = ""               // Header for the course column in the table.
-  let tab-study = ""                // Header for the study column in the table.
-  let tab-note = ""                 // Header for the note column in the table.
-  let index = 0                     // Index for iterating through dictionary entries.
+  let overview = () // Container to store event details for the table.
+  let term = () // Temporary variable for storing term information (summer/winter).
+  let tabhelp = () // Container for storing table headers and labels.
+  let year = "" // Year extracted from the YAML data.
+  let name = "" // Event name.
+  let study = "" // Study details for the event.
+  let index1 = 0 // Index for iterating through dictionary keys.
+  let tab-year = "" // Header for the year column in the table.
+  let tab-course = "" // Header for the course column in the table.
+  let tab-study = "" // Header for the study column in the table.
+  let tab-note = "" // Header for the note column in the table.
+  let index = 0 // Index for iterating through dictionary entries.
 
   // Iterate over the keys (years) in the dictionary
   for key in what.keys() {
     // Extract the year from the dictionary
     year = what.keys().at(index)
- 
+
     // Get the subset of events for the current year
-    let subset = what.at(key) 
+    let subset = what.at(key)
 
     // Iterate over each course in the subset
     for course in subset.keys() {
@@ -1285,10 +1293,10 @@
           } else {
             [#year]
           }
-          
+
           // Get the name and study details based on the selected language
           name = subset2.name.at(lang)
-          study = subset2.study.at(lang)   
+          study = subset2.study.at(lang)
 
           // Get headers for table columns
           tab-year = multilingual.lang.at(lang).tab-year
@@ -1298,7 +1306,7 @@
 
           // Exit the language loop as we found the matching language
           break
-        } 
+        }
       }
 
       // Create a tuple with term, name, and study details for the event
@@ -1309,33 +1317,41 @@
 
       // Add the event details to the overview
       overview.push(help)
-    } 
+    }
 
     // Increment the index to process the next year
     index += 1
   }
-  
+
   // Create a table using the collected event details
   cv-cols-table(
     "",
     table(
-      columns: 3,                       // Define the number of columns
-      stroke: none,                    // No border strokes
+      columns: 3,
+      // Define the number of columns
+      stroke: none,
+      // No border strokes
       table.header(
-        [#tabhelp.at(0)],              // Year column header
-        [#tabhelp.at(1)],              // Course column header
-        [#tabhelp.at(2)],              // Study column header
+        [#tabhelp.at(0)],
+        // Year column header
+        [#tabhelp.at(1)],
+        // Course column header
+        [#tabhelp.at(2)],
+        // Study column header
       ),
-      table.hline(),                   // Horizontal line under the header
-        ..for (k, x, v) in overview { // Populate table rows with event details
-          (k, x, v)
-        },
-      table.hline(),                   // Horizontal line at the end of the table
+      table.hline(),
+      // Horizontal line under the header
+      ..for (k, x, v) in overview {
+        // Populate table rows with event details
+        (k, x, v)
+      },
+      table.hline(),
+      // Horizontal line at the end of the table
       table.cell(
-        colspan: 3,                  // Cell spanning all columns for the note
-        tabhelp.at(3)                // Note text
-      )
-    )
+        colspan: 3, // Cell spanning all columns for the note
+        tabhelp.at(3), // Note text
+      ),
+    ),
   )
 }
 
@@ -1347,15 +1363,15 @@
 // - lang: Language code for fetching language-specific text from the YAML data.
 #let cv-auto-list(
   what,
-  multilingual,        
-  lang: "de"   
+  multilingual,
+  lang: "de",
 ) = {
   // Initialize variables
-  let name = ""       // Name of the event.
-  let action = ""     // Action associated with the event.
-  let year = ""       // Year extracted from the YAML data.
-  let subset = ""     // Subset of events for the current year.
-  let index = 0       // Index for iterating through dictionary keys.
+  let name = "" // Name of the event.
+  let action = "" // Action associated with the event.
+  let year = "" // Year extracted from the YAML data.
+  let subset = "" // Subset of events for the current year.
+  let index = 0 // Index for iterating through dictionary keys.
 
   // Iterate over the keys (years) in the dictionary
   for key in what.keys() {
@@ -1364,9 +1380,9 @@
 
     // Initialize an empty list to hold events for the current year
     let conf-in-year = []
-    
+
     // Get the subset of events for the current year
-    let subset = what.at(key) 
+    let subset = what.at(key)
 
     // Iterate over each event in the subset
     for event in subset.keys() {
@@ -1374,15 +1390,15 @@
 
       // Extract the name and action of the event
       if type(subset2.name) == dictionary {
-         for language in multilingual.lang.keys() {
-            if lang == language {
-              name = subset2.name.at(lang)
-            }
-         }
+        for language in multilingual.lang.keys() {
+          if lang == language {
+            name = subset2.name.at(lang)
+          }
+        }
       } else {
         name = subset2.name
       }
-      
+
       action = subset2.action
 
       // Format the event details as text and concatenate to the list
@@ -1390,15 +1406,15 @@
         conf-in-year = text([#name#super[#action]])
       } else {
         conf-in-year = conf-in-year + ", " + text([#name#super[#action]])
-      }     
+      }
     }
     // Increment the index to process the next year
     index = index + 1
 
     // Generate a column with the year and concatenated event details
     cv-cols(
-      year,          // Year column
-      conf-in-year   // Concatenated event details for the year
+      year, // Year column
+      conf-in-year, // Concatenated event details for the year
     )
   }
 }
@@ -1411,34 +1427,34 @@
 // - lang:  language of cv; the language code to use for fetching language-specific fields from the YAML data.
 #let cv-auto-skills(
   what,
-  multilingual,      
-  metadata,    
-  lang: "de"    
+  multilingual,
+  metadata,
+  lang: "de",
 ) = {
   // Initialize variables
-  let skill = ""                      // Temporary variable to store skill names.
-  let index1 = 0                     // Index variable for iterating through dictionary keys.
-  let index2 = 0                     // Index variable for iterating through multilingual language keys.
-  let overview = (:)                  // Container for storing categorized skills.
-  let tab-header = ()                // Container for storing table headers.
-  let help = ()                      // Temporary variable to store individual skill details.
-  let name = ""                     // Skill name.
-  let level = 0                     // Skill level.
-  let level-text = ""               // Text representation of the skill level icons.
-  let description = ""              // Skill description.
+  let skill = "" // Temporary variable to store skill names.
+  let index1 = 0 // Index variable for iterating through dictionary keys.
+  let index2 = 0 // Index variable for iterating through multilingual language keys.
+  let overview = (:) // Container for storing categorized skills.
+  let tab-header = () // Container for storing table headers.
+  let help = () // Temporary variable to store individual skill details.
+  let name = "" // Skill name.
+  let level = 0 // Skill level.
+  let level-text = "" // Text representation of the skill level icons.
+  let description = "" // Skill description.
   let main_color = rgb(metadata.colors.main_color)
   let gray_color = rgb(metadata.colors.gray_color)
   let lightgray_color = rgb(metadata.colors.lightgray_color)
 
   // Initialize helper arrays
-  let computer = ()                 // List to store computer-related skills.
-  let programs = ()                 // List to store program-related skills.
-  let languages = ()                // List to store language-related skills.
-  let header = ""                   // Temporary variable to store the current category header.
+  let computer = () // List to store computer-related skills.
+  let programs = () // List to store program-related skills.
+  let languages = () // List to store language-related skills.
+  let header = "" // Temporary variable to store the current category header.
 
   // Function to generate level icons based on the skill level
   let level-icons(level) = {
-    let i = 1 
+    let i = 1
     let filled_icons = (
       // Generate icons representing filled levels
       while i <= level {
@@ -1446,7 +1462,7 @@
         i += 1
       }
     )
-    
+
     let rest = 4 - level
     let i = 1
     let unfilled_icons = (
@@ -1456,7 +1472,7 @@
         i += 1
       }
     )
-    
+
     // Combine filled and unfilled icons
     filled_icons + unfilled_icons
   }
@@ -1466,7 +1482,7 @@
 
   // Process all categories dynamically
   for category in what.keys() {
-    let category_skills = ()  // Array to store skills for current category
+    let category_skills = () // Array to store skills for current category
     let subset = what.at(category)
 
     for skill_name in subset.keys() {
@@ -1487,7 +1503,7 @@
 
       level = details.level
       level-text = level-icons(level)
-      
+
       help = (name, level-text, description)
       category_skills.push(help)
     }
@@ -1507,21 +1523,23 @@
   let skills-leg2 = sublang.skills-leg2
   let skills-leg3 = sublang.skills-leg3
   let skills-leg4 = sublang.skills-leg4
-  
+
   // Create the skills table
   table(
-    columns: (1.12fr, 0.95fr, 0.8fr, 1.5fr, 1.7fr), // Define column widths
-    rows: 1,                             // Set initial number of rows
-    stroke: none,                        // No border strokes
+    columns: (1.12fr, 0.95fr, 0.8fr, 1.5fr, 1.7fr),
+    // Define column widths
+    rows: 1,
+    // Set initial number of rows
+    stroke: none,
+    // No border strokes
     table.header(
-      text("test", fill: white),        // Table header title
-      [#skills-tab-skills],
-      [#skills-tab-level],
-      [#skills-tab-comment],
-      [],
+      text("test", fill: white),
+      // Table header title
+      [#skills-tab-skills], [#skills-tab-level], [#skills-tab-comment], [],
     ),
-    table.hline(start: 1, stroke: (paint: gray_color, thickness: 1.25pt, dash: "dotted")), // Horizontal line after the header
-    
+    table.hline(start: 1, stroke: (paint: gray_color, thickness: 1.25pt, dash: "dotted")),
+    // Horizontal line after the header
+
     // Dynamically generate table sections for each category
     ..for (category, skills) in overview {
       let category_header = if "skills-" + category in sublang {
@@ -1543,7 +1561,7 @@
           (
             name,
             level_icons,
-            table.cell(colspan: 2)[#desc]
+            table.cell(colspan: 2)[#desc],
           )
         },
         // Separator line after category
@@ -1568,6 +1586,6 @@
     table.cell(colspan: 2)[
       #level-icons(4)
       #text(skills-leg4, size: 0.7em)
-    ]
+    ],
   )
 }

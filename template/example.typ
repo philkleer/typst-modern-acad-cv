@@ -1,8 +1,8 @@
 // #import "modern-acad-cv.typ": *
-#import "@preview/modern-acad-cv:0.1.3": *
+#import "@preview/modern-acad-cv:0.1.5": *
 
 // loading meta data and databases (needs to be ad this directory)
-#let metadata = yaml("metadata.yaml") 
+#let metadata = yaml("metadata.yaml")
 #let multilingual = yaml("dbs/i18n.yaml")
 #let work = yaml("dbs/work.yaml")
 #let education = yaml("dbs/education.yaml")
@@ -16,18 +16,18 @@
 #let skills = yaml("dbs/skills.yaml")
 
 // set the language of the document
-#let language = "en"      
+#let language = "pt"
 
 // defining variables
 #let headerLabs = create-headers(multilingual, lang: language)
 
 #show: modern-acad-cv.with(
-  metadata, 
+  metadata,
   multilingual,
-  lang: language,   
+  lang: language,
   font: "Fira Sans",
-  show-date: true
-)    
+  show-date: true,
+)
 
 = #headerLabs.at("work")
 
@@ -35,12 +35,12 @@
 
 = #headerLabs.at("education")
 
-#cv-auto-stp(education, multilingual, lang: language) 
+#cv-auto-stp(education, multilingual, lang: language)
 
 = #headerLabs.at("grants")
- 
-#cv-auto-stp(grants, multilingual, lang: language)  
- 
+
+#cv-auto-stp(grants, multilingual, lang: language)
+
 = #headerLabs.at("pubs")
 
 #cv-cols(
@@ -48,9 +48,9 @@
   for lang in multilingual.lang.keys() {
     if language == lang [
       #multilingual.lang.at(lang).pubs-note
-    ] 
-  }
-)  
+    ]
+  },
+)
 
 == #headerLabs.at("pubs-peer")
 #cv-refs(refs, multilingual, tag: "peer", me: [Mustermensch, M.], lang: language)
@@ -65,13 +65,13 @@
 #cv-refs(refs, multilingual, tag: "other", me: [Mustermensch, M.], lang: language)
 
 == #headerLabs.at("pubs-upcoming")
-#cv-refs(refs, multilingual, tag: "planned", me: [Mustermensch, M.], lang: language) 
+#cv-refs(refs, multilingual, tag: "planned", me: [Mustermensch, M.], lang: language)
 
-= #headerLabs.at("confs") 
+= #headerLabs.at("confs")
 == #headerLabs.at("confs-conf")
 #cv-cols(
-  "", 
-  headerLabs.at("exp-confs")
+  "",
+  headerLabs.at("exp-confs"),
 )
 
 #cv-auto-list(conferences, multilingual, lang: language)
@@ -87,13 +87,13 @@
 
 == #headerLabs.at("teaching-thesis")
 #if language == "de" [
-  #cv-two-items[Bachelor][9][Master][2]
+  #cv-three-items[Bachelor][7][Master][5][Lehramt][8]
 ] else if language == "en" [
-  #cv-two-items[Bachelor][9][Master][2]
+  #cv-three-items[Bachelor][7][Master][5][Teacher program][8]
 ] else if language == "pt" [
-  #cv-two-items[Graduação][9][Pós-Graduação][2]
+  #cv-three-items[Graduação][7][Pós-Graduação][5][Licenciatura][8]
 ] else [
-  #cv-two-items[Bachelor][9][Master][2]
+  #cv-three-items[Bachelor][7][Master][5][Teacher program][8]
 ]
 
 == #headerLabs.at("teaching-courses")

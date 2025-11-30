@@ -1,25 +1,25 @@
 Mustermensch2023:
   type: "article"
   date: 2023
-  page-range: 55-78
-  title: 
-    main: "Populismus und soziale Medien: Eine vergleichende Studie zur politischen Mobilisierung"
-    en: "Populism and Social Media: A Comparative Study of Political Mobilization"
-    pt: "Populismo e redes sociais: Um Estudo Comparativo de Mobilização Política"
+  page-range: 123-130
+  title: "Thermal Tolerance and Habitat Use in _Panthera leo_: Implications for Conservation Under Climate Change"
   tags: "peer"
   author: [ "Mustermensch, Momo", "Rivera, Casey" ]
   corresponding: true
   parent:
-    title: "Journal of Political Communication"
-    volume: 41
-    issue: 3
+    title: "Journal of Theoretical Ecology and Climate Dynamics"
+    volume: 15
+    issue: 2
   serial-number:
-    doi: "10.1016/j.jpolcom.2023.102865"
+    doi: "10.1016/j.jtheorecoclidy.2023.102865"
 Mustermensch2022:
   type: "article"
   date: 2022
   page-range: 201-220
-  title: "The Decline of Traditional Media in Electoral Politics: Evidence from European Democracies"
+  title: 
+    main: "Der Niedergang der traditionellen Medien in der Wahlpolitik: Beweise aus europäischen Demokratien"
+    en: "The Decline of Traditional Media in Electoral Politics: Evidence from European Democracies"
+    pt: "O declínio da mídia tradicional na política eleitoral: Evidências das democracias européias"
   tags: "peer"
   author: [ "Mustermensch, Momo" ]
   parent:
